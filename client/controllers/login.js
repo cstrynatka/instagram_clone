@@ -40,5 +40,6 @@ angular.module('Instagram')
 		optionalUrlParams: ['display'],
 		display: 'popup',
 		type: '2.0',
-		popupOptions: { width: 452, height: 633 }
+		popupOptions: { width: 452, height: 633 },
+		{ message: { email: 'Incorrect email' } }
 	}
