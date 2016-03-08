@@ -38,3 +38,29 @@ gulp.task('minify', function() {
         .pipe(header(banner))
         .pipe(gulp.dest('client'));
 });
+
+gulp.task('complexity', function() {
+	return gulp.src([
+		'!client/vendor/*.*',
+		'!client/app.min.js',
+		'client/**/*.js'
+		])
+		.pipe(complexity());
+	});
+
+gulp.task('styles', function() {
+	gulp.src([
+		'client/css/sweet-alert.css',
+		'client/css/styles.css'
+	])
+		.pipe(concat('styles.min.css'))
+		.pipe(css())
+		.pipe(gulp.dest('client/css'));
+	});
+
+gulp.task('recess', function() {
+	gulp.src('client/css/styles.css')
+	.pipe(recess())
+	.pipe(recess.reporter())
+	.pipe(gulp.dest('client/css'));
+	});
