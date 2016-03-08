@@ -1,5 +1,11 @@
 angular.module('Instagram')
-	.controller('HomeCtrl', function($scope, $window, $rootScope, $auth) {
+	.controller('HomeCtrl', function($scope, $window, $rootScope, $auth, API) {
+
+		if ($auth.isAuthenticated() && ($rootScope.currentUser && $rootScope.currentUser.username)) {
+			API.getFeed().success(function(data) {
+				$scope.photos = data;
+			});
+		}
 
 		$scope.isAuthenticated = function() {
 			// check to see if the user is logged in
@@ -7,11 +13,13 @@ angular.module('Instagram')
 		};
 
 		$scope.linkInstagram = function() {
-			// connect the user's email account with Instagram
-			$auth.link('instagram')
-			.then(function(response) {
-				$window.localStorage.currentUser = JSON.stringify(response.data.user);
-				$rootScope.currentUser = JSON.parse($window.localStorage.currentUser);
-			});
+  			$auth.link('instagram')
+    			.then(function(response) {
+      				$window.localStorage.currentUser = JSON.stringify(response.data.user);
+      				$rootScope.currentUser = JSON.parse($window.localStorage.currentUser);
+      				API.getFeed().success(function(data) {
+        				$scope.photos = data;
+		      });
+		    });
 		};
 	});
